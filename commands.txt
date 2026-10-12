@@ -1,0 +1,78 @@
+HELLOSERVLET - COMPILE, START, RUN
+===================================
+
+Folder layout (must look like this):
+
+  ~/Downloads/tomcat/webapps/HelloServlet/
+      index.html
+      WEB-INF/
+          web.xml
+          classes/
+              HelloServlet.java
+              HelloServlet.class   <- created by javac
+
+
+STEP 0: Check your Tomcat version (decides javax vs jakarta)
+-------------------------------------------------------------
+cd ~/Downloads/tomcat
+bin/version.sh
+# Tomcat 9      -> use javax.servlet.*   + javaee web.xml (version 4.0)
+# Tomcat 10/11  -> use jakarta.servlet.* + jakartaee web.xml (version 6.0)
+
+
+STEP 1: Stop Spring Boot (it also uses port 8080)
+-------------------------------------------------
+# Ctrl+C in the terminal running the Spring Boot app
+
+
+STEP 2: Clean up the misplaced class file (only once)
+-----------------------------------------------------
+cd ~/Downloads/tomcat/webapps/HelloServlet
+rm -f WEB-INF/HelloServlet.class
+
+
+STEP 3: Compile
+---------------
+cd ~/Downloads/tomcat/webapps/HelloServlet
+javac -cp ../../lib/servlet-api.jar -d WEB-INF/classes WEB-INF/classes/HelloServlet.java
+
+# check it worked:
+ls WEB-INF/classes
+# you should see HelloServlet.class
+
+
+STEP 4: Start / restart Tomcat
+------------------------------
+cd ~/Downloads/tomcat
+bin/shutdown.sh      # ignore errors if it wasn't running
+bin/startup.sh
+
+
+STEP 5: Run it
+--------------
+# Open in browser:
+http://localhost:8080/HelloServlet/
+
+# Type a name, press Submit. You should see the name in an <h1>.
+
+
+DEBUGGING
+---------
+# Watch the log live:
+tail -f ~/Downloads/tomcat/logs/catalina.out
+
+# 404         -> url-pattern in web.xml must be /hello
+#                (the form posts to "hello")
+# 405         -> doPost parameters must be (HttpServletRequest, HttpServletResponse)
+# 500         -> read logs/catalina.out for the stack trace
+# javac error "package javax.servlet does not exist"
+#             -> you are on Tomcat 10/11, switch imports to jakarta.servlet
+# Port in use -> stop Spring Boot or the old Tomcat process
+
+
+EVERY TIME YOU EDIT THE JAVA FILE
+---------------------------------
+cd ~/Downloads/tomcat/webapps/HelloServlet
+javac -cp ../../lib/servlet-api.jar -d WEB-INF/classes WEB-INF/classes/HelloServlet.java
+cd ~/Downloads/tomcat
+bin/shutdown.sh && bin/startup.sh
