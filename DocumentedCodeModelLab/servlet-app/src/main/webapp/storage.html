@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<!-- =====================================================================
+  WEB STORAGE: data saved INSIDE THE BROWSER (not on the server, not in MySQL).
+  Both work with simple key/value pairs, and values are always TEXT.
+
+    localStorage   -> stays after the tab/browser is closed (until cleared)
+    sessionStorage -> deleted when the tab is closed
+
+  Methods:  setItem(key, value)   getItem(key)   removeItem(key)   clear()
+====================================================================== -->
+<html>
+<head><meta charset="UTF-8"><title>Web Storage</title></head>
+<body style="font-family: Arial; margin: 30px">
+  <h1>Web Storage Demo</h1>
+
+  <!-- ===== PART 1: localStorage - remember a name ===== -->
+  <h3>1. localStorage (permanent)</h3>
+  <input type="text" id="nameBox" placeholder="type your name">
+  <button onclick="saveName()">Save</button>
+  <button onclick="clearName()">Clear</button>
+  <p id="nameMsg"></p>
+
+  <!-- ===== PART 2: sessionStorage - count clicks in this tab ===== -->
+  <h3>2. sessionStorage (lost when tab closes)</h3>
+  <button onclick="addClick()">Click me</button>
+  <p id="clickMsg"></p>
+
+  <!-- ===== PART 3: storing an OBJECT/ARRAY using JSON ===== -->
+  <h3>3. Storing a list (JSON)</h3>
+  <input type="text" id="itemBox" placeholder="add an item">
+  <button onclick="addItem()">Add</button>
+  <ul id="itemList"></ul>
+
+  <a href="index.html">Back to home</a>
+
+<script>
+  // ---------- PART 1: localStorage ----------
+  function saveName() {
+    var name = document.getElementById("nameBox").value;
+    localStorage.setItem("userName", name);          // save
+    showName();
+  }
+  function clearName() {
+    localStorage.removeItem("userName");             // delete one key
+    showName();
+  }
+  function showName() {
+    var name = localStorage.getItem("userName");     // read (null if not found)
+    document.getElementById("nameMsg").innerText =
+      name ? "Welcome back, " + name + "! (close the browser and come back)" : "No name saved yet.";
+  }
+
+  // ---------- PART 2: sessionStorage ----------
+  function addClick() {
+    // values are text, so convert to a number with Number(), and use 0 if nothing is stored
+    var count = Number(sessionStorage.getItem("clicks")) || 0;
+    count = count + 1;
+    sessionStorage.setItem("clicks", count);
+    showClicks();
+  }
+  function showClicks() {
+    var count = sessionStorage.getItem("clicks") || 0;
+    document.getElementById("clickMsg").innerText = "Clicks in this tab: " + count;
+  }
+
+  // ---------- PART 3: arrays/objects need JSON ----------
+  // Storage only holds text, so: JSON.stringify() to save, JSON.parse() to read back.
+  function getItems() {
+    var text = localStorage.getItem("items");        // e.g. '["milk","eggs"]'
+    return text ? JSON.parse(text) : [];             // text -> real array
+  }
+  function addItem() {
+    var box = document.getElementById("itemBox");
+    var items = getItems();
+    items.push(box.value);                           // add to the array
+    localStorage.setItem("items", JSON.stringify(items));  // array -> text, then save
+    box.value = "";
+    showItems();
+  }
+  function showItems() {
+    var list = document.getElementById("itemList");
+    list.innerHTML = "";
+    getItems().forEach(function (item) {
+      var li = document.createElement("li");
+      li.innerText = item;                           // innerText is safe (no HTML injection)
+      list.appendChild(li);
+    });
+  }
+
+  // run once when the page opens, so saved data is displayed immediately
+  showName();
+  showClicks();
+  showItems();
+</script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<!-- Home page: just links to the three parts of the demo -->
+<html>
+<head><meta charset="UTF-8"><title>Servlet Demo</title></head>
+<body style="font-family: Arial; margin: 30px">
+  <h1>Servlet Demo (Tomcat 9 + MySQL)</h1>
+  <ul>
+    <!-- GET request to HelloServlet, with a query parameter -->
+    <li><a href="hello?name=Student">1. Hello Servlet</a></li>
+    <!-- StudentServlet talks to MySQL -->
+    <li><a href="students">2. Students (MySQL connection)</a></li>
+    <!-- Pure browser feature, no servlet involved -->
+    <li><a href="storage.html">3. Web Storage (localStorage / sessionStorage)</a></li>
+  </ul>
+
+  <h3>Say hello with a form</h3>
+  <!-- A form sending a GET request: browser opens  hello?name=<typed text> -->
+  <form action="hello" method="get">
+    <input type="text" name="name" placeholder="your name">
+    <button type="submit">Send</button>
+  </form>
+</body>
+</html>

@@ -1,0 +1,121 @@
+/* =====================================================================
+   EXTERNAL STYLE SHEET  (a separate .css file linked to the page)
+   The 3 types of style sheets:
+     1. External  -> this file
+     2. Internal  -> <style> block inside App.vue
+     3. Inline    -> style="..." attribute (see the <h1> in StudentsView.vue)
+   ===================================================================== */
+
+/* ---------- SELECTOR 1: ELEMENT selector (targets the <body>) ---------- */
+body {
+  margin: 0;
+  background: #f4f6fb;
+  /* INHERITANCE: font-family and color are set once here,
+     and every child element (p, td, li, a ...) inherits them automatically. */
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+/* ---------- SELECTOR 2: ID selector (#) - one unique element ---------- */
+#app {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* ---------- SELECTOR 3: CLASS selector (.) - reusable ---------- */
+/* BOX MODEL: every element is a box made of
+     content -> padding -> border -> margin  (inside to outside)
+   box-sizing: border-box means width INCLUDES padding and border. */
+.card {
+  background: white;
+  width: 90%;                  /* content width */
+  padding: 20px;               /* space INSIDE the border */
+  border: 2px solid #dde3f0;   /* the border itself */
+  margin: 20px auto;           /* space OUTSIDE the border */
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+/* ---------- SELECTOR 4: DESCENDANT selector (space) ---------- */
+/* all <h2> anywhere inside a .card */
+.card h2 {
+  margin-top: 0;
+  color: #3b5bdb;
+}
+
+/* ---------- SELECTOR 5: CHILD selector (>) - direct children only ---------- */
+.skill-list { list-style: none; padding: 0; margin: 0; }
+.skill-list > li {
+  display: inline-block;
+  background: #e7ecff;
+  padding: 2px 8px;
+  margin: 2px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+/* ---------- SELECTOR 6: ATTRIBUTE selector [ ] ---------- */
+input[type="text"], input[type="email"], input[type="number"], input[type="date"], select {
+  width: 100%;
+  padding: 8px;
+  margin: 4px 0 12px;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+/* ---------- SELECTOR 7: PSEUDO-CLASS (:focus, :nth-child) ---------- */
+input:focus { outline: 2px solid #3b5bdb; }
+
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 8px; text-align: left; border-bottom: 1px solid #eee; }  /* GROUP selector (comma) */
+th { background: #3b5bdb; color: white; }
+tr:nth-child(even) { background: #f8f9ff; }          /* every 2nd row */
+
+/* ---------- SELECTOR 8: PSEUDO-ELEMENT (::after) ---------- */
+.required::after { content: " *"; color: red; }
+
+/* ---------- TRANSITION: smooth change between two states ---------- */
+.btn {
+  padding: 7px 14px;
+  border: none;
+  border-radius: 5px;
+  background: #3b5bdb;
+  color: white;
+  cursor: pointer;
+  margin-right: 5px;
+  /* "transition: property duration" -> animate background & size over 0.3s */
+  transition: background 0.3s, transform 0.3s;
+}
+.btn:hover {
+  background: #2b44a8;
+  transform: scale(1.08);   /* grows 8% on hover */
+}
+.btn-danger { background: #e03131; }
+.btn-danger:hover { background: #a61e1e; }
+.btn-grey { background: #868e96; }
+
+/* ---------- ANIMATION: @keyframes describes the steps, "animation" runs it ---------- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-row {
+  animation: fadeIn 0.6s ease;   /* name, duration, speed curve */
+}
+
+@keyframes pulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+.badge {
+  display: inline-block;
+  background: #fab005;
+  padding: 2px 10px;
+  border-radius: 12px;
+  animation: pulse 1.5s infinite;  /* repeats forever */
+}
+
+.error { color: #e03131; font-weight: bold; }
+.photo { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; }

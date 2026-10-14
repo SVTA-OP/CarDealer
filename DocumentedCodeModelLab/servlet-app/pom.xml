@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =====================================================================
+  Maven build file. Maven downloads the jars below automatically, so you
+  do NOT have to find them by hand. Build with:  mvn clean package
+  Result: target/servletdemo.war  -> copy into Tomcat 9's "webapps" folder.
+====================================================================== -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.example</groupId>
+  <artifactId>servletdemo</artifactId>
+  <version>1.0</version>
+  <!-- "war" = Web ARchive, the file format Tomcat deploys -->
+  <packaging>war</packaging>
+
+  <properties>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!-- no web.xml is required by newer war plugins, but we have one anyway -->
+    <failOnMissingWebXml>false</failOnMissingWebXml>
+  </properties>
+
+  <dependencies>
+    <!-- JAR 1: Servlet API 4.0 (package javax.servlet.*) - this is what Tomcat 9 uses.
+         scope "provided" = needed to COMPILE, but Tomcat already has it at runtime,
+         so it must NOT be packed inside the war. -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>4.0.1</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- JAR 2: MySQL JDBC driver - lets Java talk to MySQL.
+         This one IS packed into WEB-INF/lib inside the war. -->
+    <dependency>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
+      <version>8.0.33</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <!-- final file name: servletdemo.war -> app URL becomes /servletdemo -->
+    <finalName>servletdemo</finalName>
+  </build>
+</project>
