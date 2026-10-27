@@ -13,4 +13,6 @@ public class OrderModel {
     private String orderId;
     private int userId;     // matches UserModel.userId
     private int total;
+
+    private String userName; // Needed for the aggregate function to return List<OrderModel>
 }
