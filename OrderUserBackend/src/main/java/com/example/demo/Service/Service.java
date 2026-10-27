@@ -43,7 +43,7 @@ public class Service {
         steps.add(Aggregation.unwind("user"));                               // flatten to one user per order
         steps.add(Aggregation.project("orderId", "total").and("user.name").as("userName"));
 
-        return mongo.aggregate(Aggregation.newAggregation(steps), "orders", OrderDetails.class)
+        return mongo.aggregate(Aggregation.newAggregation(steps), "orders", OrderModel.class) // Use the model class for this class and add the userName variable in the model
                     .getMappedResults();
     }
 }
